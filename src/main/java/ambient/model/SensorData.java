@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class SensorData {
 
 	@Id
-	protected String idSensor_ID;
+	protected String id_Sensor_id;
 
 	protected float latitud;
 	protected float longitud;
@@ -39,16 +39,16 @@ public class SensorData {
 	
 	
 	public String getId() {
-		return idSensor_ID;
+		return id_Sensor_id;
 	}
 
-	public void setId(String idSensor_ID) {
-		this.idSensor_ID = idSensor_ID;
+	public void setId(String id_Sensor_id) {
+		this.id_Sensor_id = id_Sensor_id;
 	}
 
 
-	@OneToMany(mappedBy="sensor")
-	private List<Measure> measures;
+	/*@OneToMany(mappedBy="sensor")
+	private List<Measure> measures;*/
 
 	
 	

@@ -1,5 +1,6 @@
 package ambient.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,11 +16,13 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.MapsId;
 
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-
-import com.example.model.Long;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -29,17 +32,25 @@ public class Measure {
 	
 	/*@EmbeddedId
 	private LecturaSensor MeasureId;*/
-		
-	@ManyToOne(targetEntity=SensorData.class)
-	@MapsId("idSensor_ID")
-	@JoinColumn(name="Sensor_Id_idSensor_ID", referencedColumnName="idSensor_ID")
-		private SensorData sensor;
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected long idLectura;
+		protected long idLectura;
+		
+	@ManyToOne(targetEntity=SensorData.class)
+	//@MapsId("idSensor_ID")
+	@JoinColumn(name="sensor_id_id_sensor_id", referencedColumnName="id_sensor_id")
+		private SensorData sensor;
+	
+	
+	
 	//protected String idSensor_ID_Value;
+
+	@Column(name = "timeLectura", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
+	@CreationTimestamp
+	//@Temporal(TemporalType.TIMESTAMP)
+		protected Timestamp timeLectura;
+	
 	protected float temperatura;
 	protected float humedad;
 	protected float nivelCO;
@@ -103,14 +114,13 @@ public class Measure {
 	}
 
 	
-	
-	/*public SensorData getSensorID() {
+	public SensorData getSensorID() {
 		return this.sensor;
 	}
 
 	public void setSensorID(SensorData sensor) {
 		this.sensor = sensor;
-	}*/
+	}
 	
 	
 }
@@ -157,6 +167,6 @@ class LecturaSensor implements Serializable {
    public LecturaSensor(Timestamp lectura, String sensorId) {
        this.lectura = lectura;
        this.idSensor_ID_Value = sensorId;
-   }*/
-}
+   }
+}*/
 

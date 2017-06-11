@@ -27,9 +27,15 @@ public class MeasureService {
 	public void persistMeasure(JsonNode actualObj ){
 		
 		Measure measure=new Measure();
+		SensorData sensorData=new SensorData();
+		
 		
 		JsonNode jsonNode1 = actualObj.get("id");
 	    System.out.println(jsonNode1.textValue());
+	    
+		sensorData.setId(jsonNode1.textValue());
+		//sensorDataRepository.f
+		measure.setSensorID(sensorData);
 
 		//measure.setId(jsonNode1.textValue());
 		
@@ -60,9 +66,9 @@ public class MeasureService {
 		
 		
 		
-		/*SensorData sensorData=new SensorData();
-		sensorData.setSensorID(sensorData);
-		*/
+		
+	
+		
 		
 		measureRepository.save(measure);
 		//sensorDataRepository.save(sensorData);
