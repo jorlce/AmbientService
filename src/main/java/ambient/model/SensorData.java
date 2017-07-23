@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+//Measure bean related to sensor_id table
 @Entity
 @Table(name = "sensor_id")
 public class SensorData {
@@ -46,10 +47,5 @@ public class SensorData {
 		this.id_Sensor_id = id_Sensor_id;
 	}
 
-
-	/*@OneToMany(mappedBy="sensor")
-	private List<Measure> measures;*/
-
-	
 	
 }

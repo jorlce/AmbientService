@@ -41,6 +41,7 @@ public class MainController {
 	public void sensorUpload(@RequestBody String sensorString, HttpServletResponse response) {
 
 		try {
+			// Transform the string sent to the service in a Json
 			ObjectMapper mapper = new ObjectMapper();
 		    JsonNode actualObj = mapper.readTree(sensorString);
 		    System.out.println(sensorString);
@@ -49,10 +50,13 @@ public class MainController {
 			response.setStatus(HttpStatus.CREATED.value());
 		} catch (Exception e) {
 			LOGGER.error(e);
+			System.out.println(e);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
 
 	}
+	
+
 	/*
 	@RequestMapping(value = "/consultaSensor/{id}/",
 			method = RequestMethod.POST,

@@ -16,9 +16,11 @@ import ambient.repository.SensorDataRepository;
 @Service
 public class MeasureService {
 
+	//CRUD Repository for sensor_values table
 	@Autowired
 	private MeasureRepository measureRepository;
 	
+	//CRUD Repository for sensor_id table
 	@Autowired
 	private SensorDataRepository sensorDataRepository;
 	
@@ -26,22 +28,22 @@ public class MeasureService {
 	@Transactional
 	public void persistMeasure(JsonNode actualObj ){
 		
+		float mesValor; //Save float values from the Json
 		Measure measure=new Measure();
 		SensorData sensorData=new SensorData();
 		
-		
+		//Build the measure bean using the Json nodes
 		JsonNode jsonNode1 = actualObj.get("id");
 	    System.out.println(jsonNode1.textValue());
 	    
 		sensorData.setId(jsonNode1.textValue());
-		//sensorDataRepository.f
 		measure.setSensorID(sensorData);
 
 		//measure.setId(jsonNode1.textValue());
 		
 		jsonNode1 = actualObj.get("Temperatura");
 		System.out.println(jsonNode1.textValue());
-		float mesValor = Float.valueOf(jsonNode1.textValue()).floatValue();
+		mesValor = Float.valueOf(jsonNode1.textValue()).floatValue();
 		measure.setTemperature(mesValor);
 		
 		jsonNode1 = actualObj.get("Humedad");
@@ -64,12 +66,7 @@ public class MeasureService {
 		mesValor = Float.valueOf(jsonNode1.textValue()).floatValue();
 		measure.setMetano(mesValor);
 		
-		
-		
-		
-	
-		
-		
+		//Insert the Bean values in Database
 		measureRepository.save(measure);
 		//sensorDataRepository.save(sensorData);
 		

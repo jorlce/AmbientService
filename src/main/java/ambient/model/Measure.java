@@ -25,33 +25,29 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+//Measure bean related to sensor_values table
 @Entity
 @Table(name = "sensor_values")
 public class Measure {
 
 	
-	/*@EmbeddedId
-	private LecturaSensor MeasureId;*/
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 		protected long idLectura;
 		
+	//Foreign key from sensor_id table
 	@ManyToOne(targetEntity=SensorData.class)
-	//@MapsId("idSensor_ID")
 	@JoinColumn(name="sensor_id_id_sensor_id", referencedColumnName="id_sensor_id")
 		private SensorData sensor;
 	
 	
-	
-	//protected String idSensor_ID_Value;
-
+	//Let the Database Server write the timestamp value for the reading
 	@Column(name = "timeLectura", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
 	@CreationTimestamp
 	//@Temporal(TemporalType.TIMESTAMP)
 		protected Timestamp timeLectura;
 	
-	protected float temperatura;
+	protected float temperatura; 
 	protected float humedad;
 	protected float nivelCO;
 	protected float nivelCO2;
@@ -125,48 +121,5 @@ public class Measure {
 	
 }
 
-/*@Embeddable
-class LecturaSensor implements Serializable {
-   Timestamp lectura;
-   String idSensor_ID_Value;
 
-   //implements equals and hashCode
-   
-   @Override
-   public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result
-			+ ((idSensor_ID_Value == null) ? 0 : idSensor_ID_Value.hashCode());
-	result = prime * result + ((lectura == null) ? 0 : lectura.hashCode());
-	return result;
-   }
-
-   @Override
-   public boolean equals(Object obj) {
-	if (this == obj)
-		return true;
-	if (obj == null)
-		return false;
-	if (getClass() != obj.getClass())
-		return false;
-	LecturaSensor other = (LecturaSensor) obj;
-	if (idSensor_ID_Value == null) {
-		if (other.idSensor_ID_Value != null)
-			return false;
-	} else if (!idSensor_ID_Value.equals(other.idSensor_ID_Value))
-		return false;
-	if (lectura == null) {
-		if (other.lectura != null)
-			return false;
-	} else if (!lectura.equals(other.lectura))
-		return false;
-	return true;
-   }
-
-   public LecturaSensor(Timestamp lectura, String sensorId) {
-       this.lectura = lectura;
-       this.idSensor_ID_Value = sensorId;
-   }
-}*/
 
