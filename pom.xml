@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>ambientService</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Spring Boot project that catches values of unwired sensors</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -90,6 +90,13 @@
 		  <artifactId>jackson-databind</artifactId>
 		  <version>2.7.6</version>
 		</dependency>
+		
+	<!-- 	<dependency>
+  			<groupId>com.auth0</groupId>
+  			<artifactId>auth0-spring-security-api</artifactId>
+  			<version>1.0.0-rc.2</version>
+		</dependency> -->
+		
 	</dependencies>
 	
 	<build>
@@ -101,12 +108,12 @@
 		</plugins>
 	</build>
 	
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>com.mysql.jdbc</groupId>
 				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.38</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

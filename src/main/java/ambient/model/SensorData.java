@@ -11,13 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-//Measure bean related to sensor_id table
+//Bean related to sensorId table
 @Entity
-@Table(name = "sensor_id")
+@Table(name = "sensorId")
 public class SensorData {
 
 	@Id
-	protected String id_Sensor_id;
+	protected String sensorLabel;
 
 	protected float latitud;
 	protected float longitud;
@@ -39,12 +39,12 @@ public class SensorData {
 	}
 	
 	
-	public String getId() {
-		return id_Sensor_id;
+	public String getSensorLabel() {
+		return sensorLabel;
 	}
 
-	public void setId(String id_Sensor_id) {
-		this.id_Sensor_id = id_Sensor_id;
+	public void setSensorLabel(String sensorLabel) {
+		this.sensorLabel = sensorLabel;
 	}
 
 	

@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 //Input example
-//{"idSensor":"SPA001","latitud":0.,"patches":[[1,0],[2,2],[2,3]],"instructions":"NNESEESWNWW"}
-@JsonPropertyOrder({"idSensor", "latitud", "longitud"})
+//{"id":"SPA001","latitud":0.,"longitud"}
+@JsonPropertyOrder({"sensorLabel", "latitud", "longitud"})
 public class AskSensor {
 	
-	@JsonProperty("idSensor")
-	 private String idSensor = "";
+	@JsonProperty("sensorLabel")
+	 private String sensorLabel = "";
 	
 	@JsonProperty("latitud")
 	 private float latitud = 0;
@@ -19,13 +19,13 @@ public class AskSensor {
 	 private float longitud = 0;
 
 	@JsonProperty("idSensor")
-	public String getIdSensor() {
-		return idSensor;
+	public String getSensorLabel() {
+		return sensorLabel;
 	}
 
-	@JsonProperty("idSensor")
-	public void setIdSensor(String idSensor) {
-		this.idSensor = idSensor;
+	@JsonProperty("sensorLabel")
+	public void setSensorLabel(String sensorLabel) {
+		this.sensorLabel = sensorLabel;
 	}
 
 	@JsonProperty("latitud")

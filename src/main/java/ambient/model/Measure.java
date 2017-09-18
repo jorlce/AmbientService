@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.EmbeddedId;
 import javax.persistence.MapsId;
-
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -24,10 +22,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+import ambient.model.json.*;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 //Measure bean related to sensor_values table
 @Entity
-@Table(name = "sensor_values")
+@Table(name = "sensorValues")
 public class Measure {
 
 	
@@ -37,20 +38,26 @@ public class Measure {
 		
 	//Foreign key from sensor_id table
 	@ManyToOne(targetEntity=SensorData.class)
-	@JoinColumn(name="sensor_id_id_sensor_id", referencedColumnName="id_sensor_id")
+	@JoinColumn(name="sensorIdFk", referencedColumnName="sensorLabel")
 		private SensorData sensor;
 	
 	
 	//Let the Database Server write the timestamp value for the reading
 	@Column(name = "timeLectura", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
 	@CreationTimestamp
+	@JsonView(ViewsJson.Completa.class)
 	//@Temporal(TemporalType.TIMESTAMP)
 		protected Timestamp timeLectura;
 	
+	@JsonView(ViewsJson.Normal.class)
 	protected float temperatura; 
+	@JsonView(ViewsJson.Normal.class)
 	protected float humedad;
+	@JsonView(ViewsJson.Normal.class)
 	protected float nivelCO;
+	@JsonView(ViewsJson.Normal.class)
 	protected float nivelCO2;
+	@JsonView(ViewsJson.Normal.class)
 	protected float metano;
 	
 	
@@ -118,6 +125,9 @@ public class Measure {
 		this.sensor = sensor;
 	}
 	
+	public Timestamp getTimelectura() {
+		return this.timeLectura;
+	}
 	
 }
 
