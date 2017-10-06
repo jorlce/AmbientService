@@ -41,10 +41,10 @@ public class MeasureService {
 		SensorData sensorData=new SensorData();
 		
 		//Build the measure bean using the Json nodes
-		JsonNode jsonNode1 = actualObj.get("sensorLabel");
+		JsonNode jsonNode1 = actualObj.get("sensorlabel");
 	    System.out.println(jsonNode1.textValue());
 	    
-		sensorData.setSensorLabel(jsonNode1.textValue());
+		sensorData.setSensorlabel(jsonNode1.textValue());
 		measure.setSensorID(sensorData);
 
 		//measure.setId(jsonNode1.textValue());
@@ -91,7 +91,7 @@ public class MeasureService {
 		JsonNode jsonNode1 = actualObj.get("sensorLabel");
 	    System.out.println(jsonNode1.textValue());
 	    
-	    unSensorData.setSensorLabel(jsonNode1.textValue());
+	    unSensorData.setSensorlabel(jsonNode1.textValue());
 		
 		jsonNode1 = actualObj.get("Latitud");
 		System.out.println(jsonNode1.textValue());
@@ -111,7 +111,7 @@ public class MeasureService {
 		String jsonSensor = "";
 		SensorData unSensor = null;
 		try {
-			unSensor = sensorDataRepository.findBySensorLabel(unIdSensor);
+			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
 			jsonSensor = mapper.writeValueAsString(unSensor);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -156,12 +156,13 @@ public class MeasureService {
 		
 	}
 	
-	public String findTopByOrderByTimelecturaDesc(String idUnse) {
+	//Returns the measure data of the sensor with label idUnse
+	public String findSensorMeasure(String idUnse) {
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonSensor = "";
 		Measure unMeasure = null;
 		try {
-			unMeasure = measureRepository.findTopByOrderByTimelecturaDesc(idUnse);
+			//unMeasure = measureRepository.findTopByOrderByTimelecturaDesc(idUnse);
 			jsonSensor = mapper.writerWithView(ViewsJson.Normal.class).writeValueAsString(unMeasure);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -173,6 +174,48 @@ public class MeasureService {
 		return jsonSensor;
 	}
 	
+	//Returns the location data of the sensor with label unIdSensor
+	public String findBySensorLabel(String unIdSensor) {
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonSensor = "";
+		SensorData unSensor = null;
+		try {
+			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
+			jsonSensor = mapper.writeValueAsString(unSensor);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonSensor;
+	}
+	
+	//Creates a new sensor in the database
+	public void addSensorData(String sensorJson) {
+		ObjectMapper mapper = new ObjectMapper();
+		SensorData unSensor = null;
+		try {
+			unSensor = mapper.readValue(sensorJson, SensorData.class);
+			sensorDataRepository.save(unSensor);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//Creates a new sensor in the database
+	public void delSensorData(String unIdSensor) {
+		SensorData unSensor = null;
+
+			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
+			sensorDataRepository.delete(unSensor);
+		
+	}
 	
 	/*public Measure consultaSensor(SensorData unSensor){
 		return measureRepository.findTopByOrderByTimelecturaDesc(unSensor.getId());

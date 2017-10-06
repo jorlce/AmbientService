@@ -12,7 +12,7 @@ import ambient.model.SensorData;
 
 public interface MeasureRepository extends CrudRepository<Measure, Long>	{
 	List<Measure> findBySensor(SensorData sensor);
-	Measure findTopByOrderByTimelecturaDesc(String idUnse);
+	//Measure findTopByOrderByTimelecturaDesc(String idUnse);
 }
 
 

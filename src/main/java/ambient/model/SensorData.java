@@ -13,11 +13,11 @@ import javax.persistence.Table;
 
 //Bean related to sensorId table
 @Entity
-@Table(name = "sensorId")
+@Table(name = "sensorid")
 public class SensorData {
 
 	@Id
-	protected String sensorLabel;
+	protected String sensorlabel;
 
 	protected float latitud;
 	protected float longitud;
@@ -39,12 +39,12 @@ public class SensorData {
 	}
 	
 	
-	public String getSensorLabel() {
-		return sensorLabel;
+	public String getSensorlabel() {
+		return sensorlabel;
 	}
 
-	public void setSensorLabel(String sensorLabel) {
-		this.sensorLabel = sensorLabel;
+	public void setSensorlabel(String sensorlabel) {
+		this.sensorlabel = sensorlabel;
 	}
 
 	

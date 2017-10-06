@@ -53,25 +53,100 @@ public class MainController {
 			System.out.println(e);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
-
 	}
 	
-
-	/*
-	@RequestMapping(value = "/consultaSensor/{id}/",
+	
+	@RequestMapping(value = "/consultSensor/{id}",
 			method = RequestMethod.POST,
-			consumes = "text/plain",
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Measure> getLecturaSensor((@PathVariable String id, HttpServletResponse response) {
-
+			consumes = "application/json",
+			produces="application/json")
+	@ResponseBody
+	public String getLecturaSensor(@PathVariable("id") String id, HttpServletResponse response) {
+		String jsonSensor = "";
 		try {
-			return conService(id);
+			jsonSensor= mideService.findSensorMeasure(id);
 			
 			response.setStatus(HttpStatus.CREATED.value());
 		} catch (Exception e) {
 			LOGGER.error(e);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
-	}*/
+		return jsonSensor;
+	}
+	
+	@RequestMapping(value = "/getSensor/{id}",
+			method = RequestMethod.POST,
+			consumes = "application/json",
+			produces="application/json")
+	@ResponseBody
+	public String getSensorData(@PathVariable("id") String id, HttpServletResponse response) {
+		String jsonSensor = "";
+		try {
+			jsonSensor= mideService.findBySensorLabel(id);
+			
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return jsonSensor;
+	}
+	
+	@RequestMapping(value = "/addSensor",
+			method = RequestMethod.PUT,
+			consumes = "application/json")
+	@ResponseBody
+	public void putSensorData(@RequestBody String sensorJson, HttpServletResponse response) {
+		
+		try {
+			mideService.addSensorData(sensorJson);
+			
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+	}
+	
+	@RequestMapping(value = "/deleteSensor/{id}",
+			method = RequestMethod.PUT,
+			consumes = "application/json")
+	@ResponseBody
+	public void deleteSensorData(@PathVariable("id") String id, HttpServletResponse response) {
+		
+		try {
+			mideService.delSensorData(id);
+			
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+	}
+	
+	@RequestMapping(value = "/listSensors",
+			method = RequestMethod.POST,
+			produces="application/json")
+	@ResponseBody
+	public String getListaSensores(HttpServletResponse response) {
+		String jsonSensor = "";
+		try {
+			jsonSensor= mideService.listaSensores();
+			
+			System.out.println(jsonSensor);
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return jsonSensor;
+	}
+	
 
+
+	/*@RequestMapping("*")
+	@ResponseBody
+	public String fallbackMethod(){
+		return "fallback method";
+	}*/
 }

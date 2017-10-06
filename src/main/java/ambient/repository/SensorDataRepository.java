@@ -8,5 +8,5 @@ import ambient.model.SensorData;
 
 public interface SensorDataRepository extends CrudRepository<SensorData, Long> {
 	List<SensorData> findAll();
-	SensorData findBySensorLabel(String unIdSensor);
+	SensorData findBySensorlabel(String unIdSensor);
 }

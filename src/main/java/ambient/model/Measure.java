@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 //Measure bean related to sensor_values table
 @Entity
-@Table(name = "sensorValues")
+@Table(name = "sensorvalues")
 public class Measure {
 
 	
@@ -38,16 +38,16 @@ public class Measure {
 		
 	//Foreign key from sensor_id table
 	@ManyToOne(targetEntity=SensorData.class)
-	@JoinColumn(name="sensorIdFk", referencedColumnName="sensorLabel")
+	@JoinColumn(name="sensoridfk", referencedColumnName="sensorlabel")
 		private SensorData sensor;
 	
 	
 	//Let the Database Server write the timestamp value for the reading
-	@Column(name = "timeLectura", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
+	@Column(name = "timelectura", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
 	@CreationTimestamp
 	@JsonView(ViewsJson.Completa.class)
 	//@Temporal(TemporalType.TIMESTAMP)
-		protected Timestamp timeLectura;
+		protected Timestamp timelectura;
 	
 	@JsonView(ViewsJson.Normal.class)
 	protected float temperatura; 
@@ -126,7 +126,7 @@ public class Measure {
 	}
 	
 	public Timestamp getTimelectura() {
-		return this.timeLectura;
+		return this.timelectura;
 	}
 	
 }
