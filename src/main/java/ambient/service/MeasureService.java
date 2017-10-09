@@ -52,7 +52,7 @@ public class MeasureService {
 		jsonNode1 = actualObj.get("Temperatura");
 		System.out.println(jsonNode1.textValue());
 		mesValor = Float.valueOf(jsonNode1.textValue()).floatValue();
-		measure.setTemperature(mesValor);
+		measure.setTemperatura(mesValor);
 		
 		jsonNode1 = actualObj.get("Humedad");
 		System.out.println(jsonNode1.textValue());
@@ -143,7 +143,7 @@ public class MeasureService {
 		ObjectMapper mapper = new ObjectMapper();
 		String arrayToJson = "";
 		try {
-			List<Measure> listMeasure = measureRepository.findBySensor(unSensor);
+			List<Measure> listMeasure = measureRepository.findBySensorOrderByIdLecturaDesc(unSensor);
 			arrayToJson = mapper.writerWithView(ViewsJson.Completa.class).writeValueAsString(listMeasure);	
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -156,13 +156,16 @@ public class MeasureService {
 		
 	}
 	
-	//Returns the measure data of the sensor with label idUnse
-	public String findSensorMeasure(String idUnse) {
+	//Returns the last measure data of the sensor with label idUnse
+	public String findSensorMeasure(String unIdSensor) {
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonSensor = "";
+		SensorData unSensor = null;
 		Measure unMeasure = null;
 		try {
-			//unMeasure = measureRepository.findTopByOrderByTimelecturaDesc(idUnse);
+			
+			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
+			unMeasure = measureRepository.findTopBySensorOrderByIdLecturaDesc(unSensor);
 			jsonSensor = mapper.writerWithView(ViewsJson.Normal.class).writeValueAsString(unMeasure);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();

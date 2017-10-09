@@ -57,15 +57,14 @@ public class MainController {
 	
 	
 	@RequestMapping(value = "/consultSensor/{id}",
-			method = RequestMethod.POST,
-			consumes = "application/json",
+			method = RequestMethod.GET,
 			produces="application/json")
 	@ResponseBody
 	public String getLecturaSensor(@PathVariable("id") String id, HttpServletResponse response) {
 		String jsonSensor = "";
 		try {
 			jsonSensor= mideService.findSensorMeasure(id);
-			
+			 System.out.println(jsonSensor);
 			response.setStatus(HttpStatus.CREATED.value());
 		} catch (Exception e) {
 			LOGGER.error(e);
@@ -125,7 +124,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/listSensors",
-			method = RequestMethod.POST,
+			method = RequestMethod.GET,
 			produces="application/json")
 	@ResponseBody
 	public String getListaSensores(HttpServletResponse response) {

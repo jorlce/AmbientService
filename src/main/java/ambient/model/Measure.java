@@ -76,11 +76,11 @@ public class Measure {
 		return lectura;
 	}*/
 	
-	public float getTemperature() {
+	public float getTemperatura() {
 		return temperatura;
 	}
 
-	public void setTemperature(float temperatura) {
+	public void setTemperatura(float temperatura) {
 		this.temperatura = temperatura;
 	}
 
@@ -120,6 +120,7 @@ public class Measure {
 	public SensorData getSensorID() {
 		return this.sensor;
 	}
+	
 
 	public void setSensorID(SensorData sensor) {
 		this.sensor = sensor;
