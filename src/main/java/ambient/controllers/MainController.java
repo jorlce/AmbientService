@@ -141,6 +141,25 @@ public class MainController {
 		return jsonSensor;
 	}
 	
+	@RequestMapping(value = "/login/{user}/{pass}",
+			method = RequestMethod.GET,
+			produces="application/json")
+	@ResponseBody
+	public String getLogin(@PathVariable("user") String user, @PathVariable("pass") String pass,
+			HttpServletResponse response) {
+		String login = "";
+		try {
+			login= mideService.credentials(user, pass);
+			
+			System.out.println(login);
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return login;
+	}
+	
 
 
 	/*@RequestMapping("*")

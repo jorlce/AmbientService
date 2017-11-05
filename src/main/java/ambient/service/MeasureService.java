@@ -13,9 +13,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ambient.model.LoginCredential;
 import ambient.model.Measure;
 import ambient.model.SensorData;
 import ambient.model.json.ViewsJson;
+import ambient.repository.LoginRepository;
 import ambient.repository.MeasureRepository;
 import ambient.repository.SensorDataRepository;
 
@@ -31,6 +33,10 @@ public class MeasureService {
 	//CRUD Repository for sensor_id table
 	@Autowired
 	private SensorDataRepository sensorDataRepository;
+	
+	//CRUD Repository for sensor_id table
+	@Autowired
+	private LoginRepository loginRepository;
 	
 	
 	@Transactional
@@ -112,7 +118,9 @@ public class MeasureService {
 		SensorData unSensor = null;
 		try {
 			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
-			jsonSensor = mapper.writeValueAsString(unSensor);
+			if (unSensor != null) {
+				jsonSensor = mapper.writeValueAsString(unSensor);
+			}
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -128,7 +136,9 @@ public class MeasureService {
 		String arrayToJson = "";
 		try {
 			List<SensorData> listSensors = sensorDataRepository.findAll();
-			arrayToJson = mapper.writeValueAsString(listSensors);		
+			if (listSensors != null) {
+				arrayToJson = mapper.writeValueAsString(listSensors);	
+			}
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -144,7 +154,9 @@ public class MeasureService {
 		String arrayToJson = "";
 		try {
 			List<Measure> listMeasure = measureRepository.findBySensorOrderByIdLecturaDesc(unSensor);
-			arrayToJson = mapper.writerWithView(ViewsJson.Completa.class).writeValueAsString(listMeasure);	
+			if (listMeasure != null) {
+				arrayToJson = mapper.writerWithView(ViewsJson.Completa.class).writeValueAsString(listMeasure);	
+			}
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -163,10 +175,13 @@ public class MeasureService {
 		SensorData unSensor = null;
 		Measure unMeasure = null;
 		try {
-			
 			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
-			unMeasure = measureRepository.findTopBySensorOrderByIdLecturaDesc(unSensor);
-			jsonSensor = mapper.writerWithView(ViewsJson.Normal.class).writeValueAsString(unMeasure);
+			if (unSensor != null) {
+				unMeasure = measureRepository.findTopBySensorOrderByIdLecturaDesc(unSensor);
+				if (unMeasure != null) {
+					jsonSensor = mapper.writerWithView(ViewsJson.Completa.class).writeValueAsString(unMeasure);
+				}
+			}
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -184,7 +199,9 @@ public class MeasureService {
 		SensorData unSensor = null;
 		try {
 			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
-			jsonSensor = mapper.writeValueAsString(unSensor);
+			if (unSensor != null) {
+				jsonSensor = mapper.writeValueAsString(unSensor);
+			}
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -218,6 +235,32 @@ public class MeasureService {
 			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
 			sensorDataRepository.delete(unSensor);
 		
+	}
+	
+	//Check the users login data for accesing
+	public String credentials(String user, String pass) {
+		LoginCredential unLogin = null;
+		String logincheck = "";
+		try {			
+			unLogin = loginRepository.findByLogin(user);
+			
+			if (unLogin != null) {
+				System.out.println("credentials");
+				System.out.println(unLogin.getLogin());
+				System.out.println(unLogin.getPassword());
+				
+				if ((unLogin.getPassword()).equals(pass)) {
+					logincheck = "ACCEPTED";
+				} else {
+					logincheck = "REJECTED";
+				}	
+			} else 	logincheck = "EMPTY";
+			
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		return logincheck;
+
 	}
 	
 	/*public Measure consultaSensor(SensorData unSensor){
