@@ -1,8 +1,10 @@
 package ambient.service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -263,8 +265,53 @@ public class MeasureService {
 
 	}
 	
-	/*public Measure consultaSensor(SensorData unSensor){
-		return measureRepository.findTopByOrderByTimelecturaDesc(unSensor.getId());
-	}*/
+	//Retrieve data for building the chart
+	public String datosEstadistica(String id, String period) {
+		ObjectMapper mapper = new ObjectMapper();
+		String arrayJson = "";
+		SensorData unSensor = null;
+		List<Measure> listaMeasure = null;
+		LocalDateTime firstinperiod = null;
+		Timestamp firstinStamp, nowStamp;
+		try {
+			unSensor = sensorDataRepository.findBySensorlabel(id);
+			if (unSensor != null) {
+				nowStamp = new Timestamp(System.currentTimeMillis());
+				
+				LocalDateTime now = LocalDateTime.now();
+				
+				int year = now.getYear();
+				int month = now.getMonthOfYear();
+				int day = now.getDayOfMonth();
+				
+
+				switch (period) {
+					case "day":
+						firstinperiod = new LocalDateTime(year,month,day,0,0);
+						break;
+					case "month":
+						firstinperiod = new LocalDateTime(year,month,1,0,0);
+						break;
+					case "year":
+						firstinperiod = new LocalDateTime(year,1,1,0,0);
+						break;
+				}
+				firstinStamp = new Timestamp(firstinperiod.toDateTime().getMillis());
+				listaMeasure = measureRepository.entreLecturas(unSensor.getSensorlabel(), firstinStamp, nowStamp);
+				if (!(listaMeasure.isEmpty())) {
+					arrayJson = mapper.writerWithView(ViewsJson.Completa.class).writeValueAsString(listaMeasure);
+				}
+			}
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return arrayJson;
+
+	}
+
 	
 }

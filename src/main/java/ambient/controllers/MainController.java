@@ -160,6 +160,25 @@ public class MainController {
 		return login;
 	}
 	
+	
+	@RequestMapping(value = "/chart/{id}/{period}",
+			method = RequestMethod.GET,
+			produces="application/json")
+	@ResponseBody
+	public String getChart(@PathVariable("id") String id, @PathVariable("period") String period,
+			HttpServletResponse response) {
+		String jsonEstadistica = "";
+		try {
+			jsonEstadistica= mideService.datosEstadistica(id, period);
+			
+			System.out.println(jsonEstadistica);
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return jsonEstadistica;
+	}
 
 
 	/*@RequestMapping("*")

@@ -16,6 +16,10 @@ public interface MeasureRepository extends CrudRepository<Measure, Long>	{
 	//List<Measure> findTopBySensor(SensorData sensor); 
 	List<Measure> findBySensorOrderByIdLecturaDesc(SensorData sensor);
 	Measure findTopBySensorOrderByIdLecturaDesc(SensorData sensor);
+	
+	@Query("FROM Measure as lm where " +
+			"lm.sensor.sensorlabel= ?1 and lm.timelectura between ?2 and ?3")
+	List<Measure> entreLecturas(String idsensor, Timestamp fecha1, Timestamp fecha2);
 }
 
 
