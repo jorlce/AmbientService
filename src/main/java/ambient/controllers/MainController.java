@@ -55,6 +55,23 @@ public class MainController {
 		}
 	}
 	
+	@RequestMapping(value = "/confSensorNet/{id}", 
+			method = RequestMethod.GET,
+			produces = "text/plain")
+	@ResponseBody
+	public String confSensorNet(@PathVariable("id") String id, HttpServletResponse response) {
+		String conf="{\"f\":1,\"r\":1}";
+		System.out.println(conf);
+		try {
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return conf;
+	}
+
+	
 	
 	@RequestMapping(value = "/consultSensor/{id}",
 			method = RequestMethod.GET,
@@ -108,19 +125,20 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/deleteSensor/{id}",
-			method = RequestMethod.PUT,
-			consumes = "application/json")
+			method = RequestMethod.DELETE,
+			produces = "application/json")
 	@ResponseBody
-	public void deleteSensorData(@PathVariable("id") String id, HttpServletResponse response) {
-		
+	public String deleteSensorData(@PathVariable("id") String id, HttpServletResponse response) {
+		String confirm = "";
 		try {
-			mideService.delSensorData(id);
+			confirm =mideService.delSensorData(id);
 			
 			response.setStatus(HttpStatus.CREATED.value());
 		} catch (Exception e) {
 			LOGGER.error(e);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
+		return confirm;
 	}
 	
 	@RequestMapping(value = "/listSensors",

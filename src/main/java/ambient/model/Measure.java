@@ -1,5 +1,6 @@
 package ambient.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -18,10 +19,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+
 import ambient.model.json.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -38,6 +42,7 @@ public class Measure {
 		
 	//Foreign key from sensor_id table
 	@ManyToOne(targetEntity=SensorData.class)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name="sensoridfk", referencedColumnName="sensorlabel")
 		private SensorData sensor;
 	

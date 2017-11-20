@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ambient.model.LoginCredential;
 import ambient.model.Measure;
@@ -230,13 +231,21 @@ public class MeasureService {
 		}
 	}
 	
-	//Creates a new sensor in the database
-	public void delSensorData(String unIdSensor) {
+	//Delete a sensor in the database
+	@Transactional
+	public String delSensorData(String unIdSensor) {
 		SensorData unSensor = null;
+		String confirm = "ERROR";
 
 			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
-			sensorDataRepository.delete(unSensor);
-		
+			if (unSensor != null) {
+				System.out.println(unSensor.getSensorlabel());
+				measureRepository.removeLecturas(unSensor.getSensorlabel());
+				sensorDataRepository.delete(unSensor);
+				
+				confirm = "REMOVED";
+			}	
+			return confirm;
 	}
 	
 	//Check the users login data for accesing
@@ -310,7 +319,26 @@ public class MeasureService {
 			e.printStackTrace();
 		}
 		return arrayJson;
+	}
+	
+	public String configSensor(String unIdSensor) {
+		SensorData unSensor = null;
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode rootConf;
 
+		//try {
+			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
+			rootConf = mapper.createObjectNode();
+			//((ObjectNode) rootConf).put("f", unSensor.getFrecuencia());
+			//((ObjectNode) rootConf).put("r", unSensor.getEstado());
+		/*} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		return rootConf.toString();
 	}
 
 	
