@@ -192,7 +192,12 @@ public class MeasureService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return jsonSensor;
+		
+		if (jsonSensor.length()>0) {
+			return jsonSensor;
+		} else {
+			return "EMPTY";
+		}
 	}
 	
 	//Returns the location data of the sensor with label unIdSensor
@@ -212,7 +217,11 @@ public class MeasureService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return jsonSensor;
+		if (jsonSensor.length()>0) {
+			return jsonSensor;
+		} else {
+			return "EMPTY";
+		}
 	}
 	
 	//Creates a new sensor in the database
@@ -326,20 +335,32 @@ public class MeasureService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootConf;
 
-		//try {
-			unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
-			rootConf = mapper.createObjectNode();
-			//((ObjectNode) rootConf).put("f", unSensor.getFrecuencia());
+		unSensor = sensorDataRepository.findBySensorlabel(unIdSensor);
+		rootConf = mapper.createObjectNode();
+		((ObjectNode) rootConf).put("f", unSensor.getFrecuencia());
 			//((ObjectNode) rootConf).put("r", unSensor.getEstado());
-		/*} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
+		
 		return rootConf.toString();
 	}
 
-	
+	//Update the frequency for serving data of a Sensor
+		public String cambiaFreq(String sensorJson) {
+			ObjectMapper mapper = new ObjectMapper();
+			SensorData unSensor = null;
+			String confirma = "";
+			try {
+				System.out.println("Cambiando la frecuencia");
+				System.out.println(sensorJson);
+				unSensor = mapper.readValue(sensorJson, SensorData.class);
+				sensorDataRepository.save(unSensor);
+				confirma = "UPDATED";
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return confirma;
+		}
 }

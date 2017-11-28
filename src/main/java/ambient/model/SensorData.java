@@ -3,6 +3,7 @@ package ambient.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,17 @@ public class SensorData {
 	protected float latitud;
 	protected float longitud;
 	
+	@Column(name="frecuencia", columnDefinition="int default 1", updatable = true)
+	protected int frecuencia;
+	
+	public int getFrecuencia() {
+		return frecuencia;
+	}
+
+	public void setFrecuencia(int frecuencia) {
+		this.frecuencia = frecuencia;
+	}
+
 	public float getLatitud() {
 		return latitud;
 	}

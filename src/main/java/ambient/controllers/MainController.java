@@ -55,14 +55,35 @@ public class MainController {
 		}
 	}
 	
+	@RequestMapping(value = "/cambiafreq", 
+			method = RequestMethod.POST,
+			consumes = "application/json",
+			produces = "application/json")
+	@ResponseBody
+	public String cambiaFreqSensor(@RequestBody String sensorJson, HttpServletResponse response) {
+		System.out.println(sensorJson);
+		String confirma = "ERROR";
+		try {
+			confirma = mideService.cambiaFreq(sensorJson);
+			response.setStatus(HttpStatus.CREATED.value());
+		} catch (Exception e) {
+			LOGGER.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return confirma;
+	}
+	
 	@RequestMapping(value = "/confSensorNet/{id}", 
 			method = RequestMethod.GET,
 			produces = "text/plain")
 	@ResponseBody
 	public String confSensorNet(@PathVariable("id") String id, HttpServletResponse response) {
-		String conf="{\"f\":1,\"r\":1}";
-		System.out.println(conf);
+		//String conf="{\"f\":1}\r";
+		
+		String conf = "";
 		try {
+			conf = mideService.configSensor(id);
+			System.out.println(conf);
 			response.setStatus(HttpStatus.CREATED.value());
 		} catch (Exception e) {
 			LOGGER.error(e);
