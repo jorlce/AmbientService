@@ -1,117 +1,141 @@
 package ambient.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.EmbeddedId;
+import javax.persistence.MapsId;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import ambient.model.json.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+//Measure bean related to sensor_values table
 @Entity
-@Table(name = "sensor_values")
+@Table(name = "sensorvalues")
 public class Measure {
 
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+		protected long idLectura;
+		
+	//Foreign key from sensor_id table
+	@ManyToOne(targetEntity=SensorData.class)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JoinColumn(name="sensoridfk", referencedColumnName="sensorlabel")
+		private SensorData sensor;
+	
+	
+	//Let the Database Server write the timestamp value for the reading
+	@Column(name = "timelectura", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
+	@CreationTimestamp
+	@JsonView(ViewsJson.Completa.class)
+	//@Temporal(TemporalType.TIMESTAMP)
+		protected Timestamp timelectura;
+	
+	@JsonView(ViewsJson.Normal.class)
+	protected float temperatura; 
+	@JsonView(ViewsJson.Normal.class)
+	protected float humedad;
+	@JsonView(ViewsJson.Normal.class)
+	protected float nivelCO;
+	@JsonView(ViewsJson.Normal.class)
+	protected float nivelCO2;
+	@JsonView(ViewsJson.Normal.class)
+	protected float metano;
+	
+	
+	
+		
+	public long getId() {
+		//return sensor.getId();
+		return idLectura;
+	}
 
-  @EmbeddedId
-  private LecturaSensor MeasureId;
+	public void setId(long id) {
+		this.idLectura = id;
+	}
 
-  @ManyToOne(targetEntity = SensorData.class)
-  @MapsId("idSensor_ID")
-  @JoinColumn(name = "idSensor_ID_Value", referencedColumnName = "idSensor_ID")
-  private SensorData sensor;
+	/*public Timestamp getLectura() {
+		return lectura;
+	}*/
+	
+	public float getTemperatura() {
+		return temperatura;
+	}
 
-  // protected String idSensor_ID_Value;
-  protected float temperatura;
-  protected float humedad;
-  protected float nivelCO;
-  protected float nivelCO2;
-  protected float metano;
+	public void setTemperatura(float temperatura) {
+		this.temperatura = temperatura;
+	}
 
+	public float getHumedad() {
+		return humedad;
+	}
 
+	public void setHumedad(float humedad) {
+		this.humedad = humedad;
+	}
 
-  public String getId() {
-    // return sensor.getId();
-    return MeasureId.idSensor_ID_Value;
-  }
+	public float getNivelCO() {
+		return nivelCO;
+	}
 
-  public void setId(String id) {
-    this.MeasureId.idSensor_ID_Value = id;
-  }
+	public void setNivelCO(float nivelCO) {
+		this.nivelCO = nivelCO;
+	}
 
-  public Timestamp getLectura() {
-    return MeasureId.lectura;
-  }
+	public float getNivelCO2() {
+		return nivelCO2;
+	}
 
-  public float getTemperature() {
-    return temperatura;
-  }
+	public void setNivelCO2(float nivelCO2) {
+		this.nivelCO2 = nivelCO2;
+	}
 
-  public void setTemperature(float temperatura) {
-    this.temperatura = temperatura;
-  }
+	public float getMetano() {
+		return metano;
+	}
 
-  public float getHumedad() {
-    return humedad;
-  }
+	public void setMetano(float metano) {
+		this.metano = metano;
+	}
 
-  public void setHumedad(float humedad) {
-    this.humedad = humedad;
-  }
+	
+	public SensorData getSensorID() {
+		return this.sensor;
+	}
+	
 
-  public float getNivelCO() {
-    return nivelCO;
-  }
-
-  public void setNivelCO(float nivelCO) {
-    this.nivelCO = nivelCO;
-  }
-
-  public float getNivelCO2() {
-    return nivelCO2;
-  }
-
-  public void setNivelCO2(float nivelCO2) {
-    this.nivelCO2 = nivelCO2;
-  }
-
-  public float getMetano() {
-    return metano;
-  }
-
-  public void setMetano(float metano) {
-    this.metano = metano;
-  }
-
-
-
-  /*
-   * public SensorData getSensorID() { return this.sensor; }
-   * 
-   * public void setSensorID(SensorData sensor) { this.sensor = sensor; }
-   */
-
-
+	public void setSensorID(SensorData sensor) {
+		this.sensor = sensor;
+	}
+	
+	public Timestamp getTimelectura() {
+		return this.timelectura;
+	}
+	
 }
 
 
-@Embeddable
-class LecturaSensor implements Serializable {
-
-  private static final long serialVersionUID = 1L;
-  Timestamp lectura;
-  String idSensor_ID_Value;
-
-  // implements equals and hashCode
-
-  public LecturaSensor() {}
-
-  public LecturaSensor(Timestamp lectura, String sensorId) {
-    this.lectura = lectura;
-    this.idSensor_ID_Value = sensorId;
-  }
-}
 
